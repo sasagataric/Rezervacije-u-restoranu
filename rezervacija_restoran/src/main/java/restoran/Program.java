@@ -30,7 +30,8 @@ public class Program {
         UpravljanjeRezervacijama rezervacije= new UpravljanjeRezervacijama();
         
         UpravljanjeStolovima stolovi;
-        try {
+        try { 
+        	
         	SviStolovi s = SviStolovi.loadStolovi();
         	stolovi = new UpravljanjeStolovima(s.getBrDesetMesta(),s.getBrOsamMesta(),s.getBrCetiriMesta(),s.getBrDvaMesta());
         }catch (Exception e) {
