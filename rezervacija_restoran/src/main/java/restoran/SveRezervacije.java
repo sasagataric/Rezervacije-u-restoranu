@@ -47,7 +47,6 @@ public class SveRezervacije {
     }
 	
 	 public void prikaziRezervacijePoDatumu(String datum) {
-	        System.out.println("Dan za pretragu: " + datum);
 	        ArrayList<Rezervacija> pomList = new ArrayList<Rezervacija>();
 	        for (int i = 0; i < listaRezervacija.size(); i++) {
 	        	Rezervacija pom = listaRezervacija.get(i);
@@ -60,7 +59,7 @@ public class SveRezervacije {
 	        } else {
 	            System.out.println("Rezervacije za: " + datum);
 	            for (int i = 0; i < pomList.size(); i++) {
-	                System.out.print(i + 1 + ". ");
+	                System.out.print("\n"+i + 1 + ". ");
 	                pomList.get(i).prikazRezervacije();
 	            }
 	        }
@@ -88,7 +87,6 @@ public class SveRezervacije {
 	            	pomlist.add(temp);
 	            }
 	        }
-
 	        return pomlist;
 	    }
 
@@ -108,5 +106,7 @@ public class SveRezervacije {
 		 }
 	       
 	    }
+	 
+	 
 	
 }

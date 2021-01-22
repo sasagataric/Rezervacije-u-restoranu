@@ -74,7 +74,7 @@ public class MailSender {
 			{
 				mex.printStackTrace();
 			}
-		System.out.println("Poruka je poslata.");
+		System.out.println("Mejl je poslata.");
 	}
 	public class SMTPAuthenticator extends javax.mail.Authenticator
 	{

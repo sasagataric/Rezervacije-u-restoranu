@@ -85,7 +85,7 @@ public class OsobaNaListiCekanja implements Serializable{
 	}
 	
 	public void prikazOsobe() {
-		System.out.println("Ime: " + ime);
+		System.out.println("   Ime: " + ime);
         System.out.println("   Datum: " + datum);
         System.out.println("   Vreme dolaska: " + vremeDolaska);
         System.out.println("   Smena: " + smena);

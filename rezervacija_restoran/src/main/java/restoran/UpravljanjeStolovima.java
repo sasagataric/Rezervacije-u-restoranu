@@ -23,8 +23,8 @@ public class UpravljanjeStolovima {
 	private SveRezervacije rl;
 	
 
-	public UpravljanjeStolovima(){
-		listaStolova = new SviStolovi(1, 1, 1, 1);
+	public UpravljanjeStolovima(int i, int j, int k, int l){
+		listaStolova = new SviStolovi(i, j, k, l);
 		
 		rl= UpravljanjeRezervacijama.listaRezervacije;
 	}
@@ -35,13 +35,12 @@ public class UpravljanjeStolovima {
 	
 	public void pokreni() throws ClassNotFoundException{
 		Date danas = new GregorianCalendar().getTime();
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		String danasString = df.format(danas);
 		
 		
 		System.out.println("Sinhronizacija stolova sa rezervacijama.");
-		listaStolova.sinhronizacijaStolovaSaRezervacijama(danasString, this.rl);
-		//			listaStolova.expireReservations(rl, danasString, 30);
+		listaStolova.sinhronizacijaStolovaSaRezervacijama(danasString, rl);
 		try {
 			UpravljanjeRezervacijama.saveReservations();
 		} catch (IOException e) {

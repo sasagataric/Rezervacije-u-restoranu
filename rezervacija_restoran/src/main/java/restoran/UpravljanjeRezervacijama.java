@@ -26,6 +26,9 @@ import mejl.MailSender;
 
 public class UpravljanjeRezervacijama {
 
+	private final static String RAZMAK1 = "**********************************************";
+	private final static String RAZMAK2 = "##############################################";
+	
 	public static SveRezervacije listaRezervacije;
 	private SviStolovi listaStolova;
 	private SveOsobeNaListiCekanja listaCekanja;
@@ -38,8 +41,6 @@ public class UpravljanjeRezervacijama {
 		this.listaStolova = listaStolova;
 	}
 	
-	private final static String RAZMAK1 = "**********************************************";
-    private final static String RAZMAK2 = "##############################################";
 
     public UpravljanjeRezervacijama() {
     	listaRezervacije = new SveRezervacije();
@@ -92,12 +93,6 @@ public class UpravljanjeRezervacijama {
                         y = false;
                     } while (y);
                     break;
-                case (6):
-                    do {
-                    	listaCekanja.prikaziListuCekanja();;
-                        y = false;
-                    } while (y);
-                    break;
                 case (-1):
                     return;
                 default:
@@ -113,7 +108,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
         String inputDatum;
         String inputVreme;
         Calendar danas = new GregorianCalendar();	
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String todayString = sdf.format(danas.getTime());
         boolean x = true;
         while (x) {
@@ -121,7 +116,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
             String smena = "";
             do {
             	System.out.println("\n###### Kreiraj Rezervaciju ######");
-            	System.out.println("Uneti datum rezervacije u formatu dd-mm-gggg: (Uneti -1 za korak unazad)");
+            	System.out.println("Uneti datum rezervacije u formatu dd.mm.gggg: (Uneti -1 za korak unazad)");
             	do {
                      inputDatum = input.next();
                      if(inputDatum.length()==10) {
@@ -131,7 +126,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                          return;
                      }
                      
-                     System.out.println("Nepravilno unet datum \nDodati nulu ako je dan ili mesec jednocifren u formatu dd-mm-gggg"); 
+                     System.out.println("Nepravilno unet datum \nDodati nulu ako je dan ili mesec jednocifren u formatu dd.mm.gggg"); 
             	}while(true);
                 
                 System.out.println("Uneti vreme dolaska u formatu SSmm: (Uneti -1 za korak unazad)");
@@ -147,7 +142,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                         return;
                     }
                     System.out.println("Neodgovarajuæi broj cifara \nUneti vreme dolaska u formatu SSmm: (Uneti -1 za korak unazad)"); 
-           	}while(true);
+                }while(true);
                 try {
                 	smena = proveraSmene(inputVreme);
                     if (smena.equals("")) {
@@ -157,21 +152,26 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                     
                     
                     Calendar datumKorisnika=Calendar.getInstance();
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy HHmm");
-                    Date reservationDate = sdf1.parse(inputDatum + " " + inputDatum);
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy HHmm");
+                    Date reservationDate = sdf1.parse(inputDatum + " " + inputVreme);
                     datumKorisnika.setTime(reservationDate);
                     
-                    Calendar mesecDanaOdDanas = new GregorianCalendar();
-                    mesecDanaOdDanas.add(Calendar.DAY_OF_MONTH, 30);
-                    if (datumKorisnika.compareTo(danas) < 0 || datumKorisnika.compareTo(mesecDanaOdDanas) == 1 ) {
+                    Calendar triMesecaOdDanas = new GregorianCalendar();
+                    triMesecaOdDanas.add(Calendar.DAY_OF_MONTH, 90);
+                    if (datumKorisnika.compareTo(danas) < 0) {
                         System.out.println("Nije moguæa rezervacija za unet datum");
-                    } else {
+                    } 
+                    else if(datumKorisnika.compareTo(triMesecaOdDanas) > 0) {
+                    	System.out.println("Maksimalno rezervisanje 3 meseca unapred");
+                    }
+                    else {
                     	System.out.println("Smena: " + smena);
                         pom = 1;
                         x = false;
                     }
                 } catch (ParseException e) {
-                    System.out.println("Uneti datum u formatu dd-mm-gggg i vreme u formatu SSmm");
+                	System.out.println(e);
+                    System.out.println("Uneti datum u formatu dd.mm.gggg i vreme u formatu SSmm");
                     input.nextLine();
                 }
                 
@@ -201,13 +201,19 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                     break;
                 }
                 
-                System.out.println("Uneti broj ljudi: (Uneti -1 za korak unazad)");
+                
                 int brOsoba = 0;
                 do {
                     try {
+                    	System.out.println("Uneti broj ljudi: (Uneti -1 za korak unazad)");
                     	brOsoba = input.nextInt();
-                        System.out.println(RAZMAK2);
-                        break;
+                    	if(brOsoba<=10 && brOsoba!=0 && brOsoba>=-1) {
+                    		System.out.println(RAZMAK2);
+                    		break;
+                    	}else {
+                    		if(brOsoba>0)
+                    		System.out.println("Maksimanlan broj osoba je 10");
+                    	}
                     } catch (InputMismatchException e) {
                         System.out.println("Uneti broj");
                         input.nextLine();
@@ -220,9 +226,9 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 
                 for (int i = 0; i < neRezervisaniStolovi.size(); i++) {
 
-                    if ((neRezervisaniStolovi.get(i).getKapacitetStola() >= brOsoba) && (neRezervisaniStolovi.get(i).getKapacitetStola() <= brOsoba + 3)) {
+                    if (neRezervisaniStolovi.get(i).getKapacitetStola() >= brOsoba && neRezervisaniStolovi.get(i).getKapacitetStola() <= brOsoba + 3) {
                         Sto sto = neRezervisaniStolovi.get(i);
-                        System.out.println("Sto: " + sto.getBrojStola() + ", kapacitet stola: " + sto.getKapacitetStola());
+                        System.out.println("Sto: " + sto.getBrojStola() + ", kapacitet stola: " + sto.getKapacitetStola()+"\n");
                         listaRezervacije.kreirajRezervaciju(sto.getBrojStola(), brOsoba, brojTelefona, ime, inputDatum, inputVreme, smena);
                         listaStolova.sinhronizacijaStolovaSaRezervacijama(todayString, listaRezervacije);
                         saveReservations();
@@ -230,7 +236,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                         return;
                     }
                 }
-                System.out.println("Nema stola koji odgovara za unetu rezervaciju");
+                System.out.println("Nema stola koji odgovara za unetu rezervaciju \n");
                 System.out.println("Da li zelite da vas stavimo na listu èekanja (d/n)");
                 char odluka;
                 String mejl;
@@ -280,7 +286,6 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 	            if (broj.equals("-1")) {
 	                return;
 	            }
-	            System.out.println("Broj telefona: " + broj);
 	            for (int i = 0; i < sveRezervacije.size(); i++) {
 	                Rezervacija temp = sveRezervacije.get(i);
 	                if (temp.getBrojTelefona().equals(broj)) {
@@ -288,7 +293,7 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 	                }
 	            }
 	        } else if (telOrDate == 0) {
-	            System.out.println("Uneti datum formatu dd-mm-gggg: (Uneti -1 za korak unazad)");
+	            System.out.println("Uneti datum formatu dd.mm.gggg: (Uneti -1 za korak unazad)");
 	            String inputDatum;
 	            do {
 	            	inputDatum = input.next();
@@ -299,10 +304,9 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
                         return;
                     }
                     
-                    System.out.println("Nepravilno unet datum. \nDodati nulu ako je dan ili mesec jednocifren u formatu dd-mm-gggg."); 
+                    System.out.println("Nepravilno unet datum. \nDodati nulu ako je dan ili mesec jednocifren u formatu dd.mm.gggg."); 
 	            }while(true);
 	            
-	            System.out.println("Datum: " + inputDatum);
 	
 	            for (int i = 0; i < sveRezervacije.size(); i++) {
 	            	Rezervacija temp = sveRezervacije.get(i);
@@ -321,32 +325,32 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 	                pomListaRez.get(i).prikazRezervacije();
 	                System.out.println("");
 	            }
-	            int choice = 0;
+	            int br = 0;
 	            
 	            boolean z = true;
 	            do {
 	                do {
 	                    try {
 	                        System.out.println("Odabrati rezervaciju za brisanje: (Uneti -1 za korak unazad)");
-	                        choice = input.nextInt();
+	                        br = input.nextInt();
 	                        System.out.println(RAZMAK2);
 	                        break;
 	                    } catch (InputMismatchException e) {
 	                        System.out.println("Neispravan unos");
 	                    }
 	                } while (true);
-	                if (choice == -1) {
+	                if (br == -1) {
 	                    return;
 	                }
 	                try {
-	                    Rezervacija todelete = pomListaRez.get(choice - 1);
-	                    listaRezervacije.obrisiRezervaciju(todelete);
+	                    Rezervacija zabrisanje = pomListaRez.get(br - 1);
+	                    listaRezervacije.obrisiRezervaciju(zabrisanje);
 	                    saveReservations();
 	                    
 //	                    Proveravanje da li postoji korisnik sa liste cekanja koji bi moga da popuni obrisano mesto
 	                    
-	                    ArrayList<OsobaNaListiCekanja> lCekanja = listaCekanja.getListuCekanjaZaDatum(todelete.getDatumRezervacije(), todelete.getSmena()); 
-	                    ArrayList<Integer> brojRezervisanogStolaUSmeni = listaRezervacije.getStoloviRezervisaniDatuma(todelete.getDatumRezervacije(), todelete.getSmena());
+	                    ArrayList<OsobaNaListiCekanja> lCekanja = listaCekanja.getListuCekanjaZaDatum(zabrisanje.getDatumRezervacije(), zabrisanje.getSmena()); 
+	                    ArrayList<Integer> brojRezervisanogStolaUSmeni = listaRezervacije.getStoloviRezervisaniDatuma(zabrisanje.getDatumRezervacije(), zabrisanje.getSmena());
 	                    ArrayList<Sto> neRezervisaniStolovi = new ArrayList<Sto>(); 
 	                    ArrayList<Sto> sviStolovi = listaStolova.getSviStolovi();
 
@@ -373,8 +377,8 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 	                    	 }
 	                    }
 	                    
-	                    z = false;
 	                    x = false;
+	                    break; 
 	                } catch (ArrayIndexOutOfBoundsException e) {
 	                    System.out.println("Neispravan unos");
 	                } catch (IOException ex) {
@@ -413,9 +417,9 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 	public static String proveraSmene(Date now) throws ParseException {	
 	    String smena = "";
 	    Calendar x = new GregorianCalendar();
-	    SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+	    SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy");
 	    String dateToday = sdf1.format(x.getTime());
-	    SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy HHmm");
+	    SimpleDateFormat sdf2 = new SimpleDateFormat("dd.MM.yyyy HHmm");
 	
 	    String amStart = "0000";
 	    String amEnd = "1200";
@@ -442,21 +446,18 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
 
 	public boolean isteklaRezervacija(Rezervacija r ) {
 		Calendar danas = new GregorianCalendar();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         String todayString = sdf.format(danas.getTime());
         
 		String stringDatumRezervacije =r.getDatumRezervacije();
 		try {
-			Date datumRezervacije=new SimpleDateFormat("dd-MM-yyyy").parse(stringDatumRezervacije);
-			Date danasnjiDatum=new SimpleDateFormat("dd-MM-yyyy").parse(todayString);
+			Date datumRezervacije=new SimpleDateFormat("dd.MM.yyyy").parse(stringDatumRezervacije);
+			Date danasnjiDatum=new SimpleDateFormat("dd.MM.yyyy").parse(todayString);
 			if(datumRezervacije.before(danasnjiDatum)) {
 				return true;
 			}
 		} catch (ParseException e) {
 		}
-		
-		
-		
 		return false;
 	}
 
@@ -514,11 +515,10 @@ public void kreirajRezervaciju() throws FileNotFoundException, ClassNotFoundExce
         System.out.println("*            OPCIJE REZERVACIJE                *");
         System.out.println("*  Odabratio opciju: (Uneti -1 za korak nazad) *");
         System.out.println("*  1. Kreiraj rezervaciju                      *");
-        System.out.println("*  2. Proveri rezervaciju                      *");
+        System.out.println("*  2. Pretraži rezervaciju                     *");
         System.out.println("*  3. Obriši rezervaciju (po broju telefona)   *");
         System.out.println("*  4. Obriši rezervaciju (po datumu)           *");
         System.out.println("*  5. Prikaz svih rezervacija                  *");
-        System.out.println("*  6. Prikaz listu èekanja                     *");
         System.out.println(RAZMAK1);
     }
 }

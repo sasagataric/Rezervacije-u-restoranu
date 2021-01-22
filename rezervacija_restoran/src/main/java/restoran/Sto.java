@@ -1,12 +1,14 @@
 package restoran;
 
+import java.io.Serializable;
+
 /**
  * Klasa Sto sadrži sve podatke koji su vezani za specifièan sto
  * 
  * @author Saša Gatariæ
  *
  */
-public class Sto {
+public class Sto implements Serializable{
 
 	private int brojStola;
 	private int kapacitetStola;

@@ -1,5 +1,14 @@
 package restoran;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,13 +21,13 @@ import java.util.GregorianCalendar;
  * @author Saša Gatariæ
  *
  */
-public class SviStolovi {
+public class SviStolovi implements Serializable{
 
 	private ArrayList<Sto> sviStolovi;
-	private static int brDesetMesta;
-	private static int brOsamMesta;
-	private static int brCetiriMesta;
-	private static int brDvaMesta;
+	private int brDesetMesta;
+	private int brOsamMesta;
+	private int brCetiriMesta;
+	private int brDvaMesta;
 	private int brojStolova;
 	
 	private ArrayList<Rezervacija> rezervacijaDanasPrepodne;
@@ -45,36 +54,36 @@ public class SviStolovi {
 		this.sviStolovi = sviStolovi;
 	}
 
-	public static int getBrDesetMesta() {
+	public  int getBrDesetMesta() {
 		return brDesetMesta;
 	}
 
-	public static void setBrDesetMesta(int brDesetMesta) {
-		SviStolovi.brDesetMesta = brDesetMesta;
+	public  void setBrDesetMesta(int brDesetMesta) {
+		this.brDesetMesta = brDesetMesta;
 	}
 
-	public static int getBrOsamMesta() {
+	public  int getBrOsamMesta() {
 		return brOsamMesta;
 	}
 
-	public static void setBrOsamMesta(int brOsamMesta) {
-		SviStolovi.brOsamMesta = brOsamMesta;
+	public  void setBrOsamMesta(int brOsamMesta) {
+		this.brOsamMesta = brOsamMesta;
 	}
 
-	public static int getBrCetiriMesta() {
+	public  int getBrCetiriMesta() {
 		return brCetiriMesta;
 	}
 
-	public static void setBrCetiriMesta(int brCetiriMesta) {
-		SviStolovi.brCetiriMesta = brCetiriMesta;
+	public  void setBrCetiriMesta(int brCetiriMesta) {
+		this.brCetiriMesta = brCetiriMesta;
 	}
 
-	public static int getBrDvaMesta() {
+	public  int getBrDvaMesta() {
 		return brDvaMesta;
 	}
 
-	public static void setBrDvaMesta(int brDvaMesta) {
-		SviStolovi.brDvaMesta = brDvaMesta;
+	public  void setBrDvaMesta(int brDvaMesta) {
+		this.brDvaMesta = brDvaMesta;
 	}
 
 	public int getBrojStolova() {
@@ -219,6 +228,31 @@ public class SviStolovi {
 		 	Sto sto = sviStolovi.get(brojStola - 1);
 	        return sto;
 	    }
+	
+	public static void saveStolovi(int deset,int osam,int cetiri,int dva) throws FileNotFoundException, IOException, ClassNotFoundException {
+	    File file = new File("Stolovi.txt");
+	    SviStolovi stolovi = new SviStolovi(deset,osam,cetiri,dva);
+	    FileOutputStream fo = new FileOutputStream(file);
+	    ObjectOutputStream output = new ObjectOutputStream(fo);
+	    output.writeObject(stolovi);
+	    output.close();
+	    fo.close();
+	}
+	
+	public static SviStolovi loadStolovi() throws IOException, ClassNotFoundException {
+        File file = new File("Stolovi.txt");
+        FileInputStream fi = new FileInputStream(file);
+        ObjectInputStream input1 = new ObjectInputStream(fi);
+        SviStolovi stolovi = null;
+        try {
+            while (true) {
+            	stolovi = (SviStolovi) input1.readObject(); 
+            }
+        } catch (EOFException ex) {
+        	return stolovi;
+        }
+    }
+	
 	
 	
 }
