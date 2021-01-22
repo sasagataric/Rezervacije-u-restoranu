@@ -69,12 +69,13 @@ public class MailSender {
 			msg.addRecipient(Message.RecipientType.TO,
 			new InternetAddress(receiverEmailID));
 			Transport.send(msg);
+			System.out.println("Mejl je poslata.");
 			}
 			catch (Exception mex)
 			{
-				mex.printStackTrace();
+				System.out.println("Greška pri slanju!!!");
 			}
-		System.out.println("Mejl je poslata.");
+		
 	}
 	public class SMTPAuthenticator extends javax.mail.Authenticator
 	{
