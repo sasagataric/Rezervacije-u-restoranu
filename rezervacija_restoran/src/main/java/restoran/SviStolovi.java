@@ -90,7 +90,6 @@ public class SviStolovi implements Serializable{
 		return brojStolova;
 	}
 
-
 	public ArrayList<Rezervacija> getRezervacijaDanasPrepodne() {
 		return rezervacijaDanasPrepodne;
 	}

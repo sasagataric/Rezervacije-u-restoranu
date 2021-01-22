@@ -114,7 +114,6 @@ public class MailSender {
         {  
             hexString.insert(0, '0');  
         }  
-  
         return hexString.toString();  
     } 
 	

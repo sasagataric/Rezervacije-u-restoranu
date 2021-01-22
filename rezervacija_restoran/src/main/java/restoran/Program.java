@@ -19,11 +19,9 @@ import mejl.MailSender;
 
 
 public class Program {
-	private final static String RAZMAK1 = "**********************************************";
-	   
+	private final static String RAZMAK1 = "**********************************************"; 
     private final static String RAZMAK2 = "##############################################";
-
-    
+  
 	public static void main(String[] arg) throws ClassNotFoundException, IOException {
 		System.out.println(RAZMAK2);
         Scanner input = new Scanner(System.in);

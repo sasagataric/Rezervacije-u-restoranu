@@ -61,7 +61,6 @@ public class UpravljanjeStolovima {
 		}
 	}
 	
-   
 	public void prikazStatusaSvihStolova(){
 		System.out.println("Status svih stolova: ");
 		listaStolova.prikazStatusaStola();

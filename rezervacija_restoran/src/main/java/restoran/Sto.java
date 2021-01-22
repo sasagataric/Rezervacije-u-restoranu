@@ -73,9 +73,5 @@ public class Sto implements Serializable{
 			if(rezPre && !rezPolse)System.out.println("Slobodan poslepodne");
 			if(!rezPre && rezPolse)System.out.println("Slobodan prepodne");
 		}
-		
-		
-		
-		
 	}
 }

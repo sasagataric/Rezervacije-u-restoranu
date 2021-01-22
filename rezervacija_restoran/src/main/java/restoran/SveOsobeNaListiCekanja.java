@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 import mejl.MailSender;
 
 public class SveOsobeNaListiCekanja {

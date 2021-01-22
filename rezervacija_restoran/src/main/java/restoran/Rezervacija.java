@@ -74,12 +74,12 @@ public class Rezervacija implements Serializable{
 		this.smena = smena;
 	}
 	
-	 public void prikazRezervacije() {
+	public void prikazRezervacije() {
 	        System.out.println( "******* Rezervacija za: " + imeOsobe+ " *******");
 	        System.out.println("Datum rezervacije: " + datumRezervacije);
 	        System.out.println("Vreme dolaska: " + vremeDolaska);
 	        System.out.println("Sto: " + brojStola);
 	        System.out.println("Broj osoba: " + brojOsoba);
 	        System.out.println("Broj telefona: " + brojTelefona);
-	    }
+	}
 }

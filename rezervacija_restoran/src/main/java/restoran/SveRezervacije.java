@@ -2,8 +2,6 @@ package restoran;
 
 import java.util.ArrayList;
 
-
-
 public class SveRezervacije {
 
 	private final static String RAZMAK2 = "##############################################";
