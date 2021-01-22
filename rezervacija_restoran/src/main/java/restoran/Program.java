@@ -32,7 +32,6 @@ public class Program {
         UpravljanjeStolovima stolovi;
         try {
         	SviStolovi s = SviStolovi.loadStolovi();
-        	System.out.println(s.getBrDesetMesta());
         	stolovi = new UpravljanjeStolovima(s.getBrDesetMesta(),s.getBrOsamMesta(),s.getBrCetiriMesta(),s.getBrDvaMesta());
         }catch (Exception e) {
         	System.out.println("Broj stolova sa 10 mesta:");
