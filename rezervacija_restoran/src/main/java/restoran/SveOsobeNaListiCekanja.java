@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import mejl.MailSender;
 
 public class SveOsobeNaListiCekanja {
 
@@ -42,99 +41,6 @@ public class SveOsobeNaListiCekanja {
 		listaCekanja.add(osoba);
 		osoba.prikazOsobe();
 	}
-	
-	public void obrisiSaListeCekanja(OsobaNaListiCekanja osoba) {
-		int msg = 0;
-        for (int i = 0; i < listaCekanja.size(); i++) {
-            if (listaCekanja.get(i) == osoba) {
-            	listaCekanja.remove(i);
-                msg = 1;
-            }
-        }
-        if (msg == 1) {
-            System.out.println("Osoba je obrisana sa liste èekanja");
-        } else {
-            System.out.println("Greška, ništa nije promenjeno");
-        }
-	}
-	
-	 public void prikaziListuCekanja() {
-		 if(listaCekanja.isEmpty()) {
-			 System.out.println("");
-			 System.out.println("Lista èekanja je prazna");
-			 System.out.println("");
-		 }else {
-			 System.out.println("*******  Lista èekanja  *******");
-			 for (int i = 0; i < listaCekanja.size(); i++) {
-		            System.out.println("");
-		            System.out.print(i + 1 + ". ");
-		            listaCekanja.get(i).prikazOsobe();
-		        }
-			 System.out.println("");
-             System.out.println(RAZMAK2);
-		 }
-	    }
-	 
-	 public ArrayList<OsobaNaListiCekanja> getListuCekanjaZaDatum(String datum, String smena) {
-	        ArrayList<OsobaNaListiCekanja> pomlist = new ArrayList<OsobaNaListiCekanja>();
-	        for (int i = 0; i < listaCekanja.size(); i++) {
-	        	OsobaNaListiCekanja temp = listaCekanja.get(i);
-	            if (temp.getDatum().equals(datum) && (temp.getSmena().equals(smena))) {
-	            	pomlist.add(temp);
-	            }
-	        }
-	        return pomlist;
-	    }
-	 
-	public void saveOsobuUListuCekanja() throws FileNotFoundException, IOException, ClassNotFoundException {
-	    File file = new File("Lista cekanja.txt");
-	    ArrayList<OsobaNaListiCekanja> nizOsoba = listaCekanja;
-	    FileOutputStream fo = new FileOutputStream(file);
-	    ObjectOutputStream output = new ObjectOutputStream(fo);
-	    for (int i = 0; i < nizOsoba.size(); i++) {
-	        output.writeObject(nizOsoba.get(i));
-	    }
-//	    System.out.println("Osoba uspešno saèuvane.");
-	    output.close();
-	    fo.close();
-	}
-	
-	public boolean isteklaRezervacijaUListiCekanja(OsobaNaListiCekanja o ) {
-		Calendar danas = new GregorianCalendar();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        String todayString = sdf.format(danas.getTime());
-        
-		String stringDatumRezervacije =o.getDatum();
-		try {
-			Date datumRezervacije=new SimpleDateFormat("dd.MM.yyyy").parse(stringDatumRezervacije);
-			Date danasnjiDatum=new SimpleDateFormat("dd.MM.yyyy").parse(todayString);
-			if(datumRezervacije.before(danasnjiDatum)) {
-				return true;
-			}
-		} catch (ParseException e) {
-		}
-		return false;
-	}
-	
-	public void loadListaCekanja() throws IOException, ClassNotFoundException {
-        File file = new File("Lista cekanja.txt");
-        FileInputStream fi = new FileInputStream(file);
-        ObjectInputStream input1 = new ObjectInputStream(fi);
-        ArrayList<OsobaNaListiCekanja> nizOsoba = new ArrayList<OsobaNaListiCekanja>();
-        try {
-            while (true) {
-            	OsobaNaListiCekanja os = (OsobaNaListiCekanja) input1.readObject();
-            	if(!isteklaRezervacijaUListiCekanja(os)) {
-            		nizOsoba.add(os);
-            	}
-            	
-            }
-        } catch (EOFException ex) {
-        	setListaCekanja(nizOsoba);
-            System.out.println("Lista èekanja uspešno uèitana.");
-        }
-
-    }
 	
 	public void pokreni() {
     	boolean x = true;
@@ -179,6 +85,101 @@ public class SveOsobeNaListiCekanja {
         }
     }
 	
+	public void obrisiSaListeCekanja(OsobaNaListiCekanja osoba) {
+		int msg = 0;
+        for (int i = 0; i < listaCekanja.size(); i++) {
+            if (listaCekanja.get(i) == osoba) {
+            	listaCekanja.remove(i);
+                msg = 1;
+            }
+        }
+        if (msg == 1) {
+            System.out.println("Osoba je obrisana sa liste èekanja");
+        } else {
+            System.out.println("Greška, ništa nije promenjeno");
+        }
+	}
+	
+	 public void prikaziListuCekanja() {
+		 if(listaCekanja.isEmpty()) {
+			 System.out.println("");
+			 System.out.println("Lista èekanja je prazna");
+			 System.out.println("");
+		 }else {
+			 System.out.println("*******  Lista èekanja  *******");
+			 for (int i = 0; i < listaCekanja.size(); i++) {
+		            System.out.println("");
+		            System.out.print(i + 1 + ". ");
+		            listaCekanja.get(i).prikazOsobe();
+		        }
+			 System.out.println("");
+             System.out.println(RAZMAK2);
+		 }
+	    }
+	 
+	 public ArrayList<OsobaNaListiCekanja> getListuCekanjaZaDatum(String datum, String smena) {
+	        ArrayList<OsobaNaListiCekanja> pomlist = new ArrayList<OsobaNaListiCekanja>();
+	        for (int i = 0; i < listaCekanja.size(); i++) {
+	        	OsobaNaListiCekanja temp = listaCekanja.get(i);
+	            if (temp.getDatumRezervacije().equals(datum) && (temp.getSmena().equals(smena))) {
+	            	pomlist.add(temp);
+	            }
+	        }
+	        return pomlist;
+	    }
+	 
+	public void saveOsobuUListuCekanja() throws FileNotFoundException, IOException, ClassNotFoundException {
+	    File file = new File("Lista cekanja.txt");
+	    ArrayList<OsobaNaListiCekanja> nizOsoba = listaCekanja;
+	    FileOutputStream fo = new FileOutputStream(file);
+	    ObjectOutputStream output = new ObjectOutputStream(fo);
+	    for (int i = 0; i < nizOsoba.size(); i++) {
+	        output.writeObject(nizOsoba.get(i));
+	    }
+//	    System.out.println("Osoba uspešno saèuvane.");
+	    output.close();
+	    fo.close();
+	}
+	
+	public boolean isteklaRezervacijaUListiCekanja(OsobaNaListiCekanja o ) {
+		Calendar danas = new GregorianCalendar();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        String todayString = sdf.format(danas.getTime());
+        
+		String stringDatumRezervacije =o.getDatumRezervacije();
+		try {
+			Date datumRezervacije=new SimpleDateFormat("dd.MM.yyyy").parse(stringDatumRezervacije);
+			Date danasnjiDatum=new SimpleDateFormat("dd.MM.yyyy").parse(todayString);
+			if(datumRezervacije.before(danasnjiDatum)) {
+				return true;
+			}
+		} catch (ParseException e) {
+		}
+		return false;
+	}
+	
+	public void loadListaCekanja() throws IOException, ClassNotFoundException {
+        File file = new File("Lista cekanja.txt");
+        FileInputStream fi = new FileInputStream(file);
+        ObjectInputStream input1 = new ObjectInputStream(fi);
+        ArrayList<OsobaNaListiCekanja> nizOsoba = new ArrayList<OsobaNaListiCekanja>();
+        try {
+            while (true) {
+            	OsobaNaListiCekanja os = (OsobaNaListiCekanja) input1.readObject();
+            	if(!isteklaRezervacijaUListiCekanja(os)) {
+            		nizOsoba.add(os);
+            	}
+            	
+            }
+        } catch (EOFException ex) {
+        	setListaCekanja(nizOsoba);
+            System.out.println("Lista èekanja uspešno uèitana.");
+        }
+
+    }
+	
+
+	
 public void obrisiSaListeCekanja(int telOrDate) {
 	    
 	    Scanner input = new Scanner(System.in);
@@ -193,7 +194,6 @@ public void obrisiSaListeCekanja(int telOrDate) {
 	            if (broj.equals("-1")) {
 	                return;
 	            }
-	            
 	            for (int i = 0; i < listaCekanja.size(); i++) {
 	            	OsobaNaListiCekanja temp = listaCekanja.get(i);
 	                if (temp.getBrojTelefona().equals(broj)) {
@@ -211,15 +211,12 @@ public void obrisiSaListeCekanja(int telOrDate) {
                     if (inputDatum.equals("-1")) {
                         return;
                     }
-                    
                     System.out.println("Nepravilno unet datum. \nDodati nulu ako je dan ili mesec jednocifren u formatu dd.mm.gggg."); 
 	            }while(true);
 	            
-
-	
 	            for (int i = 0; i < listaCekanja.size(); i++) {
 	            	OsobaNaListiCekanja temp = listaCekanja.get(i);
-	                if (temp.getDatum().equals(inputDatum)) {
+	                if (temp.getDatumRezervacije().equals(inputDatum)) {
 	                	pomListaRez.add(temp);
 	                }
 	            }
@@ -235,7 +232,6 @@ public void obrisiSaListeCekanja(int telOrDate) {
 	                System.out.println("");
 	            }
 	            int br = 0;
-	            
 	            boolean z = true;
 	            do {
 	                do {
@@ -255,7 +251,6 @@ public void obrisiSaListeCekanja(int telOrDate) {
 	                	OsobaNaListiCekanja zabrisanje = pomListaRez.get(br - 1);
 	                	obrisiSaListeCekanja(zabrisanje);
 	                    saveOsobuUListuCekanja();
-	                    
 	                    x = false;
 	                    break; 
 	                } catch (ArrayIndexOutOfBoundsException e) {
@@ -263,7 +258,6 @@ public void obrisiSaListeCekanja(int telOrDate) {
 	                } catch (IOException ex) {
 	                } catch (ClassNotFoundException ex) {
 	                }
-	
 	            } while (z);
 	        }
 	    }

@@ -71,7 +71,7 @@ public class MailSender {
 			Transport.send(msg);
 			System.out.println("Mejl je poslata.");
 			}
-			catch (Exception mex)
+		catch (Exception mex)
 			{
 				System.out.println("Greška pri slanju!!!");
 			}

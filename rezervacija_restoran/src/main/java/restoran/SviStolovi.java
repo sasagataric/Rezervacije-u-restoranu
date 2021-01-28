@@ -33,15 +33,15 @@ public class SviStolovi implements Serializable{
 	private ArrayList<Rezervacija> rezervacijaDanasPrepodne;
 	private ArrayList<Rezervacija> rezervacijaDanasPoslepodne;
 	
-	public SviStolovi(int a, int b, int c, int d) {
+	public SviStolovi(int br10, int br8, int br4, int br2) {
 		sviStolovi= new ArrayList<Sto>();
-		brDesetMesta=a;
-		brOsamMesta=b;
-		brCetiriMesta=c;
-		brDvaMesta=d;
+		brDesetMesta=br10;
+		brOsamMesta=br8;
+		brCetiriMesta=br4;
+		brDvaMesta=br2;
 		postaviStolove();
 		
-		brojStolova= a+b+c+d;
+		brojStolova= br10+br8+br4+br2;
 		rezervacijaDanasPrepodne = new ArrayList<Rezervacija>();
 		rezervacijaDanasPoslepodne = new ArrayList<Rezervacija>();
 	}
@@ -180,41 +180,6 @@ public class SviStolovi implements Serializable{
 	            }
 	        }
 	        return danasRezervisaniStolovi;
-	    }
-	 
-	 public ArrayList<Sto> getSlobodniStolovi() {
-	        ArrayList<Sto> slobodniStolovi = new ArrayList<Sto>();
-	        Sto sto = null;
-	        Date trenutnoVreme = new GregorianCalendar().getTime();
-	        String Slot = "";
-	        try {
-				Slot = UpravljanjeRezervacijama.proveraSmene(trenutnoVreme);
-				if(Slot.equals("Prepodne")){
-					for(int i=0;i<brojStolova;i++){
-						if (!( sviStolovi.get(i).rezervisanPrepodne())) {
-							sto = sviStolovi.get(i);
-							slobodniStolovi.add(sto);
-		                }
-					}
-				}
-				else if(Slot.equals("Poslepodne")){
-					for(int i=0;i<brojStolova;i++){
-						if (!(sviStolovi.get(i).rezervisanPoslepodne())) {
-							sto = sviStolovi.get(i);
-							slobodniStolovi.add(sto);
-		                }
-					}
-				}
-				else if(Slot.equals("Zatvoren")){
-					System.out.println("");
-					System.out.println("Restoran je zatvoren");
-					System.out.println("");
-				}
-
-			} catch (ParseException e) {
-				System.out.println("Trenutno nije moguca provera slobodnih stolova. ");
-			}
-	        return slobodniStolovi;
 	    }
 	 
 	 /**

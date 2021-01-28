@@ -12,9 +12,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-
-
 import mejl.MailSender;
 
 
@@ -29,7 +26,6 @@ public class Program {
         
         UpravljanjeStolovima stolovi;
         try { 
-        	
         	SviStolovi s = SviStolovi.loadStolovi();
         	stolovi = new UpravljanjeStolovima(s.getBrDesetMesta(),s.getBrOsamMesta(),s.getBrCetiriMesta(),s.getBrDvaMesta());
         }catch (Exception e) {
@@ -75,8 +71,7 @@ public class Program {
         	System.out.println(RAZMAK2);
         } catch (InputMismatchException e) {
             System.out.println("Greška prilikom sinhronizacije stolova sa rezervacijama");
-        }
-            
+        }    
         while (x) {
             try {
             	prikaziMeni();
@@ -84,7 +79,6 @@ public class Program {
             } catch (InputMismatchException e) {
                 input.nextLine();
             }
-
          switch (choice) {
                 case (1):
                     	rezervacije.pokreni();
@@ -98,7 +92,6 @@ public class Program {
                     
                 default:
                     System.out.println("Uneti validnu opciju");
-
             }
         }
     }
