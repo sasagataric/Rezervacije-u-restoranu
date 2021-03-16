@@ -17,7 +17,9 @@ import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class SveOsobeNaListiCekanja {
+import intefejsi.IRadSaPodacima;
+
+public class SveOsobeNaListiCekanja implements IRadSaPodacima{
 
 	private final static String RAZMAK1 = "**********************************************";
 	private final static String RAZMAK2 = "##############################################";
@@ -128,18 +130,7 @@ public class SveOsobeNaListiCekanja {
 	        return pomlist;
 	    }
 	 
-	public void saveOsobuUListuCekanja() throws FileNotFoundException, IOException, ClassNotFoundException {
-	    File file = new File("Lista cekanja.txt");
-	    ArrayList<OsobaNaListiCekanja> nizOsoba = listaCekanja;
-	    FileOutputStream fo = new FileOutputStream(file);
-	    ObjectOutputStream output = new ObjectOutputStream(fo);
-	    for (int i = 0; i < nizOsoba.size(); i++) {
-	        output.writeObject(nizOsoba.get(i));
-	    }
-//	    System.out.println("Osoba uspešno saèuvane.");
-	    output.close();
-	    fo.close();
-	}
+	
 	
 	public boolean isteklaRezervacijaUListiCekanja(OsobaNaListiCekanja o ) {
 		Calendar danas = new GregorianCalendar();
@@ -157,8 +148,20 @@ public class SveOsobeNaListiCekanja {
 		}
 		return false;
 	}
+	public void saveData() throws FileNotFoundException, IOException, ClassNotFoundException {
+	    File file = new File("Lista cekanja.txt");
+	    ArrayList<OsobaNaListiCekanja> nizOsoba = listaCekanja;
+	    FileOutputStream fo = new FileOutputStream(file);
+	    ObjectOutputStream output = new ObjectOutputStream(fo);
+	    for (int i = 0; i < nizOsoba.size(); i++) {
+	        output.writeObject(nizOsoba.get(i));
+	    }
+//	    System.out.println("Osoba uspešno saèuvane.");
+	    output.close();
+	    fo.close();
+	}
 	
-	public void loadListaCekanja() throws IOException, ClassNotFoundException {
+	public void loadData() throws IOException, ClassNotFoundException {
         File file = new File("Lista cekanja.txt");
         FileInputStream fi = new FileInputStream(file);
         ObjectInputStream input1 = new ObjectInputStream(fi);
@@ -250,7 +253,7 @@ public void obrisiSaListeCekanja(int telOrDate) {
 	                try {
 	                	OsobaNaListiCekanja zabrisanje = pomListaRez.get(br - 1);
 	                	obrisiSaListeCekanja(zabrisanje);
-	                    saveOsobuUListuCekanja();
+	                    saveData();
 	                    x = false;
 	                    break; 
 	                } catch (ArrayIndexOutOfBoundsException e) {

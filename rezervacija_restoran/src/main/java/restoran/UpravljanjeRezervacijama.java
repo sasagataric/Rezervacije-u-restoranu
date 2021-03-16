@@ -19,9 +19,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.validator.routines.EmailValidator;
+
+import intefejsi.IRadSaPodacima;
 import mejl.MailSender;
 
-public class UpravljanjeRezervacijama {
+public class UpravljanjeRezervacijama implements IRadSaPodacima{
 
 	private final static String RAZMAK1 = "**********************************************";
 	private final static String RAZMAK2 = "##############################################";
@@ -217,7 +219,7 @@ public class UpravljanjeRezervacijama {
                         System.out.println("Sto: " + sto.getBrojStola() + ", kapacitet stola: " + sto.getKapacitetStola()+"\n");
                         listaRezervacije.kreirajRezervaciju(sto.getBrojStola(), brOsoba, brojTelefona, ime, inputDatum, inputVreme, smena);
                         listaStolova.sinhronizacijaStolovaSaRezervacijama(todayString, listaRezervacije);
-                        saveReservations();
+                        saveData();
                         return;
                     }
                 }
@@ -244,7 +246,7 @@ public class UpravljanjeRezervacijama {
                	}while(true);
     				System.out.println(""); 
     				listaCekanja.dodajNaListuCejanja(ime, brojTelefona, mejl, inputDatum, inputVreme, smena, brOsoba);
-    				listaCekanja.saveOsobuUListuCekanja();
+    				listaCekanja.saveData();
     				break;
     			case 'n':
     				System.out.println("Hvala na razumevanju.");
@@ -328,7 +330,7 @@ public class UpravljanjeRezervacijama {
 	                try {
 	                    Rezervacija zabrisanje = pomListaRez.get(br - 1);
 	                    listaRezervacije.obrisiRezervaciju(zabrisanje);
-	                    saveReservations();
+	                    saveData();
 	                    
 //	                    Proveravanje da li postoji korisnik sa liste cekanja koji bi moga da popuni obrisano mesto
 	                    
@@ -351,9 +353,9 @@ public class UpravljanjeRezervacijama {
 	 	                            System.out.println("Sto: " + sto.getBrojStola() + ", kapacitet stola: " + sto.getKapacitetStola());
 	 	                            listaRezervacije.kreirajRezervaciju(sto.getBrojStola(), lCekanja.get(j).getBrojOsoba(), lCekanja.get(j).getBrojTelefona(), lCekanja.get(j).getImeOsobe(), lCekanja.get(j).getDatumRezervacije(), lCekanja.get(j).getVremeDolaska(), lCekanja.get(j).getSmena());
 	 	                            listaStolova.sinhronizacijaStolovaSaRezervacijama(lCekanja.get(j).getDatumRezervacije(), listaRezervacije);
-	 	                            saveReservations();
+	 	                            saveData();
 	 	                            listaCekanja.obrisiSaListeCekanja(lCekanja.get(j));
-	 	                            listaCekanja.saveOsobuUListuCekanja();
+	 	                            listaCekanja.saveData();
 	 	                            MailSender mailSender=new MailSender(lCekanja.get(j).getMejl(),"Obaveštenje o rezervaciji ", MailSender.textPoruke(lCekanja.get(j).getDatumRezervacije(), lCekanja.get(j).getVremeDolaska(), lCekanja.get(j).getBrojOsoba())); 
 	 	                            return;
 	 	                        }
@@ -444,7 +446,7 @@ public class UpravljanjeRezervacijama {
 	}
 
 
-	public static void saveReservations() throws FileNotFoundException, IOException, ClassNotFoundException {
+	    public void saveData() throws FileNotFoundException, IOException, ClassNotFoundException {
 	  
 	    File file = new File("Rezervacije.txt");
 
@@ -462,7 +464,7 @@ public class UpravljanjeRezervacijama {
 	    fo.close();
 	}
 	
-	public void loadReservations() throws IOException, ClassNotFoundException {
+	public void loadData() throws IOException, ClassNotFoundException {
         File file = new File("Rezervacije.txt");
         FileInputStream fi = new FileInputStream(file);
         ObjectInputStream input1 = new ObjectInputStream(fi);

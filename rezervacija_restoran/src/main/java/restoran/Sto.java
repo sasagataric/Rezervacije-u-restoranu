@@ -14,7 +14,7 @@ public class Sto implements Serializable{
 	private int kapacitetStola;
 	private boolean rezervisanPrepodne;
 	private boolean rezervisanPoslepodne;
-//	private boolean rezervisan;
+
 	
 	/**
 	 * @param brojStola Predstavlja broj dodeljen stolu

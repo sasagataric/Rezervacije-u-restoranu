@@ -24,10 +24,11 @@ public class Program {
         Scanner input = new Scanner(System.in);
         UpravljanjeRezervacijama rezervacije= new UpravljanjeRezervacijama();
         
-        UpravljanjeStolovima stolovi;
+        UpravljanjeStolovima stolovi = new UpravljanjeStolovima();
+        
         try { 
-        	SviStolovi s = SviStolovi.loadStolovi();
-        	stolovi = new UpravljanjeStolovima(s.getBrDesetMesta(),s.getBrOsamMesta(),s.getBrCetiriMesta(),s.getBrDvaMesta());
+        	stolovi.loadData();
+        	stolovi = new UpravljanjeStolovima(stolovi.listaStolova.getBrDesetMesta(),stolovi.listaStolova.getBrOsamMesta(),stolovi.listaStolova.getBrCetiriMesta(),stolovi.listaStolova.getBrDvaMesta());
         }catch (Exception e) {
         	System.out.println("Broj stolova sa 10 mesta:");
         	int s10 = input.nextInt();
@@ -39,14 +40,14 @@ public class Program {
         	int s2 = input.nextInt();
         	
         	stolovi = new UpravljanjeStolovima(s10,s8,s4,s2);
-        	SviStolovi.saveStolovi(s10,s8,s4,s2);
+        	stolovi.saveData();
 		}
         
         SveOsobeNaListiCekanja listaCekanja = new SveOsobeNaListiCekanja();
         
         rezervacije.setListaStolova(stolovi.listaStolova);
         try {
-        	rezervacije.loadReservations();
+        	rezervacije.loadData();
         }catch (FileNotFoundException e) {
         	System.out.println("Fajl Rezervacija.txt ne postoji, kreiraæe se novi");
 		}catch (EOFException e) {
@@ -54,7 +55,7 @@ public class Program {
 		}
         
         try {
-        	listaCekanja.loadListaCekanja();
+        	listaCekanja.loadData();
         }catch (FileNotFoundException e) {
         	System.out.println("Fajl Lista cekanja.txt ne postoji, kreiraæe se novi");
 		}catch (EOFException e) {
@@ -68,6 +69,7 @@ public class Program {
         int choice = 0;
         try {
         	stolovi.pokreni();
+        	rezervacije.saveData();
         	System.out.println(RAZMAK2);
         } catch (InputMismatchException e) {
             System.out.println("Greška prilikom sinhronizacije stolova sa rezervacijama");
@@ -89,6 +91,9 @@ public class Program {
                 case (3):
                 	listaCekanja.pokreni();
                 break;
+                case (4):
+                	System.exit(0);
+                break;
                     
                 default:
                     System.out.println("Uneti validnu opciju");
@@ -103,6 +108,7 @@ public class Program {
         System.out.println("*    1. Rezervacije                          *");
         System.out.println("*    2. Status svih stolova                  *");
         System.out.println("*    3. Lista èekanja                        *");
+        System.out.println("*    4. Zaustavi aplikaciju                  *");
         System.out.println(RAZMAK1);
 
 	}

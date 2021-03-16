@@ -193,29 +193,6 @@ public class SviStolovi implements Serializable{
 	        return sto;
 	    }
 	
-	public static void saveStolovi(int deset,int osam,int cetiri,int dva) throws FileNotFoundException, IOException, ClassNotFoundException {
-	    File file = new File("Stolovi.txt");
-	    SviStolovi stolovi = new SviStolovi(deset,osam,cetiri,dva);
-	    FileOutputStream fo = new FileOutputStream(file);
-	    ObjectOutputStream output = new ObjectOutputStream(fo);
-	    output.writeObject(stolovi);
-	    output.close();
-	    fo.close();
-	}
-	
-	public static SviStolovi loadStolovi() throws IOException, ClassNotFoundException {
-        File file = new File("Stolovi.txt");
-        FileInputStream fi = new FileInputStream(file);
-        ObjectInputStream input1 = new ObjectInputStream(fi);
-        SviStolovi stolovi = null;
-        try {
-            while (true) {
-            	stolovi = (SviStolovi) input1.readObject(); 
-            }
-        } catch (EOFException ex) {
-        	return stolovi;
-        }
-    }
 	
 	
 	
