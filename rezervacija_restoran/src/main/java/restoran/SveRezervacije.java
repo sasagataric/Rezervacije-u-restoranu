@@ -49,7 +49,7 @@ public class SveRezervacije {
 	        for (int i = 0; i < listaRezervacija.size(); i++) {
 	        	Rezervacija pom = listaRezervacija.get(i);
 	            if (pom.getDatumRezervacije().equals(datum)) {
-	            	pomList.add(pom); //In case customer makes multiple reservations.
+	            	pomList.add(pom); 
 	            }
 	        }
 	        if (pomList.isEmpty()) {

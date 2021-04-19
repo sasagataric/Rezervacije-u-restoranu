@@ -172,13 +172,11 @@ public class SveOsobeNaListiCekanja implements IRadSaPodacima{
             	if(!isteklaRezervacijaUListiCekanja(os)) {
             		nizOsoba.add(os);
             	}
-            	
             }
         } catch (EOFException ex) {
         	setListaCekanja(nizOsoba);
             System.out.println("Lista èekanja uspešno uèitana.");
         }
-
     }
 	
 
